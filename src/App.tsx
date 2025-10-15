@@ -34,19 +34,19 @@ function App() {
     [key in OptionType]: { [key: string]: SliderConfig };
   } = {
     residential: {
-      slider1: { min: 0, max: 100, step: 1, label: "Price Range (k)" },
-      slider2: { min: 1, max: 10, step: 1, label: "Bedrooms" },
-      slider3: { min: 500, max: 5000, step: 50, label: "Square Feet" },
+      slider1: { min: 0, max: 5000, step: 10, label: "Budget (k)" },
+      slider2: { min: 1, max: 100, step: 1, label: "Capacity" },
+      slider3: { min: 500, max: 100000, step: 500, label: "Square Feet" },
     },
     commercial: {
-      slider1: { min: 0, max: 1000, step: 10, label: "Budget (k)" },
-      slider2: { min: 1, max: 50, step: 1, label: "Floors" },
-      slider3: { min: 1000, max: 50000, step: 100, label: "Square Feet" },
+      slider1: { min: 0, max: 5000, step: 10, label: "Budget (k)" },
+      slider2: { min: 1, max: 100, step: 1, label: "Capacity" },
+      slider3: { min: 500, max: 100000, step: 500, label: "Square Feet" },
     },
     industrial: {
-      slider1: { min: 0, max: 5000, step: 50, label: "Investment (k)" },
-      slider2: { min: 1, max: 100, step: 1, label: "Units" },
-      slider3: { min: 5000, max: 100000, step: 500, label: "Square Feet" },
+      slider1: { min: 0, max: 5000, step: 10, label: "Budget (k)" },
+      slider2: { min: 1, max: 100, step: 1, label: "Capacity" },
+      slider3: { min: 500, max: 100000, step: 500, label: "Square Feet" },
     },
   };
 
