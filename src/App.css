@@ -51,6 +51,44 @@
   box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.1);
 }
 
+.button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.project-type-button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 120px;
+}
+
+.project-type-button:hover {
+  border-color: #646cff;
+  background-color: #f8f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-type-button.active {
+  border-color: #646cff;
+  background-color: #646cff;
+  color: white;
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
+.project-type-button:active {
+  transform: translateY(0);
+}
+
 .sliders-container {
   display: flex;
   flex-direction: column;

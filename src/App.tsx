@@ -74,6 +74,19 @@ function App() {
     }));
   };
 
+  const handleButtonClick = (type: OptionType) => {
+    setSelectedOption(type);
+    setParamUrl(type);
+
+    // Reset slider values when option changes
+    const configs = sliderConfigs[type];
+    setSliderValues({
+      slider1: Math.floor((configs.slider1.min + configs.slider1.max) / 2),
+      slider2: Math.floor((configs.slider2.min + configs.slider2.max) / 2),
+      slider3: Math.floor((configs.slider3.min + configs.slider3.max) / 2),
+    });
+  };
+
   const currentConfigs = sliderConfigs[selectedOption];
 
   return (
@@ -94,6 +107,42 @@ function App() {
               <option value="commercial">Commercial</option>
               <option value="industrial">Industrial</option>
             </select>
+          </div>
+
+          <div className="form-group">
+            <label>Quick Select:</label>
+            <div className="button-group">
+              <button
+                type="button"
+                name="residential"
+                className={`project-type-button ${
+                  selectedOption === "residential" ? "active" : ""
+                }`}
+                onClick={() => handleButtonClick("residential")}
+              >
+                Residential
+              </button>
+              <button
+                type="button"
+                name="commercial"
+                className={`project-type-button ${
+                  selectedOption === "commercial" ? "active" : ""
+                }`}
+                onClick={() => handleButtonClick("commercial")}
+              >
+                Commercial
+              </button>
+              <button
+                type="button"
+                name="industrial"
+                className={`project-type-button ${
+                  selectedOption === "industrial" ? "active" : ""
+                }`}
+                onClick={() => handleButtonClick("industrial")}
+              >
+                Industrial
+              </button>
+            </div>
           </div>
 
           <div className="sliders-container">
