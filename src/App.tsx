@@ -115,6 +115,7 @@ function App() {
               <button
                 type="button"
                 name="residential"
+                id="project-residential"
                 className={`project-type-button ${
                   selectedOption === "residential" ? "active" : ""
                 }`}
@@ -123,6 +124,7 @@ function App() {
                 Residential
               </button>
               <button
+                id="project-commercial"
                 type="button"
                 name="commercial"
                 className={`project-type-button ${
@@ -134,6 +136,7 @@ function App() {
               </button>
               <button
                 type="button"
+                id="project-industrial"
                 name="industrial"
                 className={`project-type-button ${
                   selectedOption === "industrial" ? "active" : ""
