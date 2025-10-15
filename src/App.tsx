@@ -1,5 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
+
+// Extend Window interface for GTM
+declare global {
+  interface Window {
+    dataLayer: Record<string, unknown>[];
+  }
+}
 
 type OptionType = "residential" | "commercial" | "industrial";
 
@@ -18,6 +25,9 @@ function App() {
     slider2: 30,
     slider3: 70,
   });
+
+  // Debounce timer ref
+  const gtmTimerRef = useRef<number | null>(null);
 
   // Define different slider configurations based on selected option
   const sliderConfigs: {
@@ -53,6 +63,47 @@ function App() {
     }
   };
 
+  // GTM Helper function with 5-second debounce
+  const pushToGTMDelayed = () => {
+    // Clear existing timer if it exists
+    if (gtmTimerRef.current) {
+      clearTimeout(gtmTimerRef.current);
+    }
+
+    // Set new timer for 5 seconds
+    gtmTimerRef.current = window.setTimeout(() => {
+      // Get current slider configs for meaningful names
+      const currentConfigs = sliderConfigs[selectedOption];
+
+      // Create meaningful slider data
+      const sliderData = Object.entries(sliderValues).reduce(
+        (acc, [key, value]) => {
+          const config = currentConfigs[key];
+          if (config) {
+            // Convert label to snake_case for GTM
+            const cleanLabel = config.label
+              .toLowerCase()
+              .replace(/[^a-z0-9\s]/g, "")
+              .replace(/\s+/g, "_");
+            acc[cleanLabel] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+
+      // Initialize GTM dataLayer if it doesn't exist
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "user_configuration_final",
+        property_type: selectedOption,
+        timestamp: new Date().toISOString(),
+        ...sliderData,
+      });
+      gtmTimerRef.current = null;
+    }, 5000); // 5 second delay
+  };
+
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newOption = event.target.value as OptionType;
     setSelectedOption(newOption);
@@ -60,18 +111,27 @@ function App() {
 
     // Reset slider values when option changes
     const configs = sliderConfigs[newOption];
-    setSliderValues({
+    const newSliderValues = {
       slider1: Math.floor((configs.slider1.min + configs.slider1.max) / 2),
       slider2: Math.floor((configs.slider2.min + configs.slider2.max) / 2),
       slider3: Math.floor((configs.slider3.min + configs.slider3.max) / 2),
-    });
+    };
+    setSliderValues(newSliderValues);
+
+    // Trigger delayed GTM push (will use current state after 5 seconds)
+    pushToGTMDelayed();
   };
 
   const handleSliderChange = (sliderKey: string, value: number) => {
-    setSliderValues((prev) => ({
-      ...prev,
+    const newSliderValues = {
+      ...sliderValues,
       [sliderKey]: value,
-    }));
+    };
+
+    setSliderValues(newSliderValues);
+
+    // Trigger delayed GTM push (will use current state after 5 seconds)
+    pushToGTMDelayed();
   };
 
   const handleButtonClick = (type: OptionType) => {
@@ -80,11 +140,15 @@ function App() {
 
     // Reset slider values when option changes
     const configs = sliderConfigs[type];
-    setSliderValues({
+    const newSliderValues = {
       slider1: Math.floor((configs.slider1.min + configs.slider1.max) / 2),
       slider2: Math.floor((configs.slider2.min + configs.slider2.max) / 2),
       slider3: Math.floor((configs.slider3.min + configs.slider3.max) / 2),
-    });
+    };
+    setSliderValues(newSliderValues);
+
+    // Trigger delayed GTM push (will use current state after 5 seconds)
+    pushToGTMDelayed();
   };
 
   const currentConfigs = sliderConfigs[selectedOption];
