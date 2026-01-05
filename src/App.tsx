@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import "./App.css";
+import { ConsentBanner } from "./components/ConsentBanner";
 
 // Extend Window interface for GTM
 declare global {
@@ -253,6 +254,7 @@ function App() {
           </div>
         </form>
       </div>
+      <ConsentBanner />
     </>
   );
 }
