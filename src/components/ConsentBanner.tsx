@@ -31,7 +31,7 @@ export const ConsentBanner = () => {
   const loadGTM = () => {
     // Update consent to granted
     function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
+      window.dataLayer.push(args as unknown as Record<string, unknown>);
     }
 
     gtag("consent", "update", {
@@ -57,7 +57,7 @@ export const ConsentBanner = () => {
 
     // Configure GA
     function gtagConfig(...args: unknown[]) {
-      window.dataLayer.push(args);
+      window.dataLayer.push(args as unknown as Record<string, unknown>);
     }
     gtagConfig("js", new Date());
     gtagConfig("config", GA_ID);
